@@ -1,1 +1,1 @@
-Following Kaggle tutorial using MNIST dataset on a deep learning project.
+Following tutorial using MNIST dataset on a deep learning project.
