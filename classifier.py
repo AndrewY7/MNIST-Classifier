@@ -67,7 +67,7 @@ class Net(nn.Module):
         x = F.relu(F.max_pool2d(self.conv1(x), 2))
         x = F.relu(F.max_pool2d(self.conv2_drop(self.conv2(x)),2))
         x = x.view(-1, 320)
-        x = F.reul(self.fc1(x))
+        x = F.relu(self.fc1(x))
         x = F.dropout(x, training = self.training)
         x = self.fc2(x)
         return F.log_softmax(x)
@@ -95,8 +95,8 @@ def train(epoch):
                 100. * batch_idx / len(train_loader), loss.item()))
         train_losses.append(loss.item())
         train_counter.append((batch_idx*64) + ((epoch-1)*len(train_loader.dataset)))
-        torch.save(network.state_dict(), '/results/model.pth')
-        torch.save(optimizer.state_dict(), '/results/optimizer.pth')
+        torch.save(network.state_dict(), '../MNIST Classifier/results/model.pth')
+        torch.save(optimizer.state_dict(), '../MNIST Classifier/results/optimizer.pth')
 
 def test():
     network.eval()
@@ -113,3 +113,25 @@ def test():
     print('\nTest set: Avg. loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
         test_loss, correct, len(test_loader.dataset),
         100. * correct / len(test_loader.dataset)))
+
+test()
+for epoch in range(1, n_epochs + 1):
+    train(epoch)
+    test() 
+
+
+# # Continue Training the Network
+# continued_network = Net()
+# continued_optimizer = optim.SGD(network.parameters(), lr=learning_rate,
+#                                 momentum=momentum)
+
+# network_state_dict = torch.load(model.pth)
+# continued_network.load_state_dict(network_state_dict)
+
+# optimizer_state_dict = torch.load()
+# continued_optimizer.load_state_dict(optimizer_state_dict)
+
+# for i in range(4,9):
+#   test_counter.append(i*len(train_loader.dataset))
+#   train(i)
+#   test()
